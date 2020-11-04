@@ -1,1 +1,2 @@
 https://www.digitalocean.com/community/tutorials/how-to-create-a-web-server-in-node-js-with-the-http-module-ru
+http://dl.icdst.org/pdfs/files3/e55d932527d1e4c195e52db0dcfc454d.pdf
