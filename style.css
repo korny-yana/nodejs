@@ -2,3 +2,5 @@ h1 {color: red;}
 p {color:blue;}
 div {font-weight:bold;} 
 a {text-decoration: none;}
+img {width: 500px; height: 400px;}
+li {list-style-type: none;}
