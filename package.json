@@ -1,0 +1,22 @@
+{
+  "name": "nodejs",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "dependencies": {
+    "@types/node": "^14.14.7",
+    "filepath": "^1.1.0",
+    "pug": "^3.0.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": "git+https://github.com/korny-yana/nodejs.git",
+  "author": "yana",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/korny-yana/nodejs/issues"
+  },
+  "homepage": "https://github.com/korny-yana/nodejs#readme"
+}

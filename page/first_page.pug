@@ -4,7 +4,9 @@ html(lang="ru")
     title= "Главная страница"
     link(rel="stylesheet", href="../style.css")
   body
+    .wrapper
       include header.pug
       h1 Hello, World!
       img(src="../img/img2.jpg", alt="sun")
+      include content.pug
       script(src="../app.ts")
