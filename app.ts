@@ -4,18 +4,18 @@ const path = require('path');
 const host = 'localhost';
 const port = 9000;
 
-functon 
-
 const server = http.createServer (function(req, res)
 {
+
+    if (req.url == "/") req.url = '/index.html';
     let exr = path.extname(req.url);
     let contentType = 'text/html';
     switch (exr) {
         case '.html':
             contentType = 'text/html';
             break;
-        case '.js':
-          contentType = 'text/javascript';
+        case '.ts':
+          contentType = 'text/typescript';
           break;
       case '.css':
           contentType = 'text/css';
@@ -34,7 +34,7 @@ const server = http.createServer (function(req, res)
           break;
     }
     
-    fs.readFile(__dirname + "/"+ req.url, function(err, data) {
+    fs.readFile(process.cwd()+ req.url, function(err, data) {
     if (err) {
         fs.readFile("error.html", function(err, data) {
             if (err) {
@@ -54,6 +54,18 @@ const server = http.createServer (function(req, res)
     }
             }
     );
+
+if (path.extname(req.url) === "") {
+  const folder = req.url;
+    fs.readdir(__dirname +'/' + folder, (err, data) => {
+    if (err) console.log("err");
+    else console.log(data);
+});    
+}
+  
 });
+
+
+
 server.listen(port);
 console.log(`Server running at http://${host}:${port}`);
