@@ -3,7 +3,7 @@ const fs = require('fs');
 const path = require('path');
 const host = 'localhost';
 const port = 9000;
-
+let contentFolders;
 const server = http.createServer (function(req, res)
 {
 
@@ -33,7 +33,7 @@ const server = http.createServer (function(req, res)
           contentType = 'audio/wav';
           break;
     }
-    
+ 
     fs.readFile(process.cwd()+ req.url, function(err, data) {
     if (err) {
         fs.readFile("error.html", function(err, data) {
@@ -46,7 +46,6 @@ const server = http.createServer (function(req, res)
                     }
               
         })
-        // throw err;
     }
     else {
         res.writeHead(200, {'Content-Type': contentType})
@@ -54,15 +53,40 @@ const server = http.createServer (function(req, res)
     }
             }
     );
+    
+function isExist(file) {
+    let fileExist;
+    if (fs.access(file, fs.constants.F_OK, err => {if (err) fileExist = false;
+    else fileExist = true} ))
+    return fileExist;
+    console.log(fileExist);
+}
+if ((path.extname(req.url) === "") && isExist(req.url)) {
+    fs.readdir(__dirname +'/' + req.url, (err, data) => {
+    if (err) throw err;
+    else {data.forEach(element => {
+        res.write(element)
+    
+        
+    }); 
+            res.end()}
 
-if (path.extname(req.url) === "") {
-  const folder = req.url;
-    fs.readdir(__dirname +'/' + folder, (err, data) => {
-    if (err) console.log("err");
-    else console.log(data);
+    
 });    
 }
-  
+else 
+{
+    fs.readFile("error.html", function(err, data) {
+        if (err) {
+            throw err
+        }
+        else{
+            res.writeHead(200, {"Content-Type": contentType});
+                    res.end(data);
+                }
+          
+    })
+}
 });
 
 
