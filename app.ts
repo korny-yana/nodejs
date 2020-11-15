@@ -4,7 +4,7 @@ const path = require('path');
 const host = 'localhost';
 const port = 9000;
 let contentFolders;
-const server = http.createServer (function(req, res)
+const server = http.createServer (async function(req, res)
 {
 
     if (req.url == "/") req.url = '/index.html';
@@ -33,7 +33,7 @@ const server = http.createServer (function(req, res)
           contentType = 'audio/wav';
           break;
     }
- 
+
     fs.readFile(process.cwd()+ req.url, function(err, data) {
     if (err) {
         fs.readFile("error.html", function(err, data) {
@@ -53,43 +53,28 @@ const server = http.createServer (function(req, res)
     }
             }
     );
-    
-function isExist(file) {
-    let fileExist;
-    if (fs.access(file, fs.constants.F_OK, err => {if (err) fileExist = false;
-    else fileExist = true} ))
-    return fileExist;
-    console.log(fileExist);
-}
-if ((path.extname(req.url) === "") && isExist(req.url)) {
-    fs.readdir(__dirname +'/' + req.url, (err, data) => {
-    if (err) throw err;
-    else {data.forEach(element => {
-        res.write(element)
-    
-        
-    }); 
-            res.end()}
 
-    
-});    
-}
-else 
-{
-    fs.readFile("error.html", function(err, data) {
-        if (err) {
-            throw err
+   function isExist(file) {
+        try {
+            fs.accessSync(__dirname + file, fs.constants.F_OK);
+            return true;
         }
-        else{
-            res.writeHead(200, {"Content-Type": contentType});
-                    res.end(data);
-                }
-          
-    })
+        catch (err) {
+            return false;
+        }
+    }
+if ((await isExist(req.url) === true) && (path.extname(req.url) === "")) {
+    fs.readdir(process.cwd() + req.url, (err, data) => {
+    if (err) throw err;
+    else {
+            data.forEach(element => {
+            res.write(element + "\n");
+        }); 
+            res.end()}
+    });    
 }
+
 });
-
-
 
 server.listen(port);
 console.log(`Server running at http://${host}:${port}`);
