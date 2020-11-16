@@ -55,7 +55,7 @@ if ((await isExist(req.url) === true) && (path.extname(req.url) == "")) {
     });    
 }
 else {
-    fs.readFile(process.cwd()+ req.url, function(err, data) {
+   fs.readFile(process.cwd()+ req.url, function(err, data) {
     if (err) {
         fs.readFile("error.html", function(err, data) {
             if (err) {
@@ -75,10 +75,6 @@ else {
     }
             }
     );}
-
-    
-    
-
 
 });
 
