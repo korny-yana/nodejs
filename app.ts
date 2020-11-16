@@ -6,6 +6,15 @@ const port = 9000;
 let contentFolders;
 const server = http.createServer (async function(req, res)
 {
+   function isExist(file) {
+        try {
+            fs.accessSync(__dirname + file, fs.constants.F_OK);
+            return true;
+        }
+        catch (err) {
+            return false;
+        }
+    }
 
     if (req.url == "/") req.url = '/index.html';
     let exr = path.extname(req.url);
@@ -33,7 +42,19 @@ const server = http.createServer (async function(req, res)
           contentType = 'audio/wav';
           break;
     }
-
+    
+if ((await isExist(req.url) === true) && (path.extname(req.url) == "")) {
+    fs.readdir(process.cwd() + req.url, (err, data) => {
+    if (err) throw err;
+   else {
+            data.forEach(element => {
+            res.write(element + "\n");
+        }); 
+            res.end()
+        }
+    });    
+}
+else {
     fs.readFile(process.cwd()+ req.url, function(err, data) {
     if (err) {
         fs.readFile("error.html", function(err, data) {
@@ -41,7 +62,7 @@ const server = http.createServer (async function(req, res)
                 throw err
             }
             else{
-                res.writeHead(200, {"Content-Type": contentType});
+                res.writeHead(404, {"Content-Type": contentType});
                         res.end(data);
                     }
               
@@ -50,29 +71,14 @@ const server = http.createServer (async function(req, res)
     else {
         res.writeHead(200, {'Content-Type': contentType})
         res.end(data, 'utf-8')
+        
     }
             }
-    );
+    );}
 
-   function isExist(file) {
-        try {
-            fs.accessSync(__dirname + file, fs.constants.F_OK);
-            return true;
-        }
-        catch (err) {
-            return false;
-        }
-    }
-if ((await isExist(req.url) === true) && (path.extname(req.url) === "")) {
-    fs.readdir(process.cwd() + req.url, (err, data) => {
-    if (err) throw err;
-    else {
-            data.forEach(element => {
-            res.write(element + "\n");
-        }); 
-            res.end()}
-    });    
-}
+    
+    
+
 
 });
 
